@@ -8,6 +8,31 @@
 #include <stdio.h>
 #include <math.h>
 
+int geraValorInicial(int n) { 
+	int val = 0;
+	 while(n >= 1) { 
+		val += pow(10, n - 1);
+		n--;
+	}
+	return val;
+}
+
+int digitoMaisSignificativo(int n) {
+	while(n > 9)
+		n /= 10; 
+	return n;
+}
+
+int digitoMenosSignificativo(int n) {
+	return (n % 10);
+}
+
+int arredondaProximoMultiplo10(int n) {
+	if(n % 10)
+ 	   n = n + (10 - n % 10);	
+	return n;
+}
+
 int main(int main, char* argv[]) {
 	int i, j,	//Variáveis para controlar os loops.
 	    r, n;	//Variáveis definidas pelo input do usuário, 
@@ -26,20 +51,18 @@ int main(int main, char* argv[]) {
 		} while((r < 2 || r > 10) || (n < 1 || n > 20));	
 	}
 	
-	printf("\nPermutação com repetição: \n");
+	printf("\nPermutação com repetição:\n");
 
-	int valorAtual = 1;
-	for(i = 0; i <= r; i++) {
-		printf("%d ", i+1);
-		while(valorAtual <= n) {
-			printf("%d ",  valorAtual);
+	int valorInicial  = geraValorInicial(r);
+	int valorLoop = valorInicial;
 
-			if(valorAtual == n)
-				printf("\n");
-			valorAtual++;
-		}
-		valorAtual = 1;	
-	}
-	
+	for(i = 1; i <= pow(n, r); i++) {
+		printf("%d \n", valorLoop);
+		if(digitoMenosSignificativo(valorLoop)  == n)
+			valorLoop =  arredondaProximoMultiplo10(valorLoop) + 1;
+		else
+			valorLoop++;
+	}	
+ 
 	return 0;
 }
