@@ -3,6 +3,7 @@
 // -- DCC111 - MATEMATICA DISCRETA - 2017/1
 // -- Nome: Diego Barros da Silveira
 // -- Matrícula: 201705169
+// -- Código: analise2.c
 
 #include <stdlib.h>
 #include <stdio.h>

@@ -1,0 +1,7 @@
+-- UNIVERSIDADE FEDERAL DE MINAS GERAIS - UFMG
+-- DEPARTAMENTO DE CIÊNCIA DE COMPUTAÇÃO - DCC
+-- DCC111 - MATEMATICA DISCRETA - 2017/1
+-- Nome: Diego Barros da Silveira
+-- Matrícula: 201705169
+
+Instruções de execução:

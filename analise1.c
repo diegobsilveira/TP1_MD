@@ -3,6 +3,7 @@
 // -- DCC111 - MATEMÁTICA DISCRETA - 2017/1
 // -- Nome: Diego Barros da Silveira
 // -- Matrícula:  2017015169
+// -- Código: analise1.c
 
 #include <stdlib.h>
 #include <stdio.h>
@@ -35,9 +36,9 @@ void imprimeSequencia(int r, int* sequencia) {
 void permutaRepet(int r, int n, int* sequencia) {
 	int i, j;
 
-	i = r - 1;						//Como é um vetor, o elemento mais à direita é o 'algarismo menos significativo' na hora de imprimir
-	while(i >= 0) {						//Vai do algarismo 'menos significativo' até o 'mais significativo'
-		for(j = 0; j < r; j++)  {
+	//Como é um vetor, o elemento mais à direita é o 'algarismo menos significativo' na hora de imprimir
+	for(i = r -1; i >= 0; i--) {						//Vai do algarismo 'menos significativo' até o 'mais significativo'
+		for(j = 0; j <= r; j++) {
 			while((*(sequencia + i)) <= n) {	//Enquanto o valor da posição atual for menor ou igual a 'n'
 				imprimeSequencia(r, sequencia);
 				printf("\n");
@@ -45,13 +46,14 @@ void permutaRepet(int r, int n, int* sequencia) {
 				fflush(stdout);			//Limpa o buffer de saída dos dados, para agilizar a impressão dos mesmos.
 				
 				(*(sequencia + i))++;		//Incrementa o valor da posição corrente até ela ser igual ao número máximo ('n').
-			}
+			}	
 			*(sequencia + i) = 1; 			//quando termina de contar até 'n' uma posição, volta o valor dela para 1
 			(*(sequencia + (i - 1)))++;		//e aumenta um no valor da anterior, pra fazer essa 'contagem' com essa outra posição
 		}
-		i--;
+		if(i == n) {
+			system("pause");
+		}
 	}
-
 }
 
 int main(int main, char* argv[]) {
