@@ -1,20 +1,19 @@
 // -- UNIVERSIDADE FEDERAL DE MINAS GERAIS - UFMG
-// -- DEPARTAMENTO DE CIÊNCIA DE COMPUTAÇÃO - DCC
-// -- DCC111 - MATEMATICA DISCRETA - 2017/1
+// -- DEPARTAMENTO DE CIÊNCIA DA COMPUTAÇÃO - DCC
+// -- DCC111 - MATEMÁTICA DISCRETA - 2017/1
 // -- Nome: Diego Barros da Silveira
-// -- Matrícula: 201705169
+// -- Matrícula:  2017015169
 
 #include <stdlib.h>
 #include <stdio.h>
-#include <math.h>
 
 //r é o tamanho da sequência, como definido no problema e na int main()
 int* inicializaSequencia(int r) {
 	int i; 						//controle do loop para inicializar a sequência
 	int* sequencia = (int *)(malloc(r * sizeof(int)));
 
-	if(sequencia == 0 || sequencia == NULL) {		//Caso não foi possível fazer a alocação dinâmica de um vetor (que representa a sequência deste problema).
-													//com 'r' elementos.
+	if(sequencia == 0 || sequencia == NULL) {		//Caso não foi possível fazer a alocação dinâmica de um vetor (que representa a sequência deste r								// oblema).
+							        //com 'r' elementos.
 		printf("Erro! Não possível alocar a sequência! Rode o programa novamente");
 		exit(1);
 	}
@@ -32,11 +31,33 @@ void imprimeSequencia(int r, int* sequencia) {
 		printf("%d ", *(sequencia + i));
 }
 
+//Faz a permutação com repetição da sequência e imprime na tela;
+void permutaRepet(int r, int n, int* sequencia) {
+	int i, j;
+
+	i = r - 1;						//Como é um vetor, o elemento mais à direita é o 'algarismo menos significativo' na hora de imprimir
+	while(i >= 0) {						//Vai do algarismo 'menos significativo' até o 'mais significativo'
+		for(j = 0; j < r; j++)  {
+			while((*(sequencia + i)) <= n) {	//Enquanto o valor da posição atual for menor ou igual a 'n'
+				imprimeSequencia(r, sequencia);
+				printf("\n");
+				
+				fflush(stdout);			//Limpa o buffer de saída dos dados, para agilizar a impressão dos mesmos.
+				
+				(*(sequencia + i))++;		//Incrementa o valor da posição corrente até ela ser igual ao número máximo ('n').
+			}
+			*(sequencia + i) = 1; 			//quando termina de contar até 'n' uma posição, volta o valor dela para 1
+			(*(sequencia + (i - 1)))++;		//e aumenta um no valor da anterior, pra fazer essa 'contagem' com essa outra posição
+		}
+		i--;
+	}
+
+}
+
 int main(int main, char* argv[]) {
-	int i, j,	//Variáveis para controlar os loops.
-	    r, n;   //Variáveis definidas pelo input do usuário,
+	int r, n;   	//Variáveis definidas pelo input do usuário,
 	    		//de  controle, para imprimir a permutação com
-				//repetição para o usuário.
+			//repetição para o usuário.
 
 	printf("Digite o valor de r (2 <= r <= 10) e n (1 <= n <= 20) respectivamente: \n");
 	scanf("%d%d", &r, &n);
@@ -52,17 +73,8 @@ int main(int main, char* argv[]) {
 	
 	int* sequencia = inicializaSequencia(r);		//Inicializa uma sequência de tamanho r.
 	printf("\nPermutação com repetição:\n");
-	
-	i = r - 1;
-	while(i >= 0) {
-		while(*(sequencia + i) <= n) {
-			imprimeSequencia(r, sequencia);
-			printf("\n");
-			(*(sequencia + i))++;
-		}
-		*(sequencia + i) = 1;
-		i--;
-	}
+
+	permutaRepet(r, n, sequencia);				//Imprime a permutação da sequência, de acordo com 'r' e 'n' digitados pelo usuário
 	
 	return 0;
 }
