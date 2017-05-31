@@ -32,9 +32,48 @@ void imprimeSequencia(int r, int* sequencia) {
 		printf("%d ", *(sequencia + i));
 }
 
-void combinaRepet(int r, int n, int* sequencia) {
-	imprimeSequencia(r, sequencia);
-	printf("\n");
+
+int proximaPermutacao(int* permutacao, int r, int n){
+    int i = 0, j;
+    
+    if(permutacao[i] == n){ //checa se a o algarismo menos significativo na permutação chegou ao limite 'n'
+        for(i = i + 1;permutacao[i] >= n && i < r; i++); // encontra o primeiro algarismo menor que o limite 'n'
+        if(i < r){ //checa se as permutacoes nao acabaram
+            permutacao[i]++;
+            for(j = 0; j < i; j++){ // iguala todas as casas a direita do algarismo a ele
+                permutacao[j] = permutacao[i];
+            }
+        }
+        else{
+            return 0; // nao existe proxima permutacao
+        }
+    }
+    else{
+        permutacao[i]++;
+    }
+    return 1; //existe permutacao
+}
+
+void combinaRepet(int r, int n) {
+	int i, j, k;
+	int* combinacao = inicializaSequencia(r);
+	
+	//Como é um vetor, o elemento mais à direita é o 'algarismo menos significativo' na hora de imprimir
+	for(i = r - 1; i >= 0; i--) {						//Vai do algarismo 'menos significativo' até o 'mais significativo'
+	    for(j = r - 1; j >= i; j--) {
+	        while((*(combinacao + j)) < n) {
+		        imprimeSequencia(r, combinacao);
+		        printf("\n");
+		        
+		        (*(combinacao + j))++;
+	        }
+	    }
+		
+		for(k = i; k <= (r - 1); k++)
+			(*(combinacao + k)) = (*(combinacao + (i - 1))) + 1;
+			
+		(*(combinacao + (i - 1)))++;
+	}
 }
 
 int main(int argc, char* argv[]) {
@@ -54,8 +93,9 @@ int main(int argc, char* argv[]) {
 		} while((r < 2 || r > 10) || (n < 1 || n > 5));	
 	}
 	
-	int* sequencia = inicializaSequencia(r);	
+	//int* sequencia = inicializaSequencia(r);	
 	printf("\nCombinação com repetição: \n");
+    combinaRepet(r, n);
 
 	return 0;
 }
