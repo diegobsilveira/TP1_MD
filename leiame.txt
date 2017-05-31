@@ -9,7 +9,7 @@ ________________________________________________________________________________
 |-Para executar os programas é recomendado utilizar um distro GNU/Linux (recomendado, mas não obrigatório/necessário)que contenha o GCC a |-partir da versão 5.4.0 e que tenha memória RAM de no mínimo 4GB. Mas, caso não for um distro GNU/Linux pode-se usar um compilador para
 |-Windows (como o Dev-C++ ou também CodeBlocks).
 | 
-|-Esses programas foram desenvolvidos em um sistema GNU/Linux (Ubuntu 16.04.4 LTS) utilizando o compilador de C gcc na versão 5.4.0.
+|-Esses programas foram desenvolvidos em um sistema GNU/Linux (Ubuntu 16.04.4 LTS) utilizando o compilador de C gcc na versão 5.4.0, em |-|-uma máquina de 8GB de memória RAM.
 | 
 |-Instruções de execução:
 |
