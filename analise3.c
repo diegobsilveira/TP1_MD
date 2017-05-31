@@ -74,9 +74,8 @@ int main(int argc, char* argv[]) {
 		} while((r < 2 || r > 10) || (n < 1 || n > 5));	
 	}
 	
-	//int* sequencia = inicializaSequencia(r);	
 	printf("\nCombinação com repetição: \n");
-    combinaRepet(r, n);
+    	combinaRepet(r, n);
 
 	return 0;
 }
