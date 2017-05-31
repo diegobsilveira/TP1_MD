@@ -31,7 +31,7 @@ void imprimeSequencia(int r, int* sequencia) {
 	for(i = 0; i < r; i++)
 		printf("%d ", *(sequencia + i));
         
-    printf("\n");
+    	printf("\n");
 }
 
 void combinaRepet(int r, int n) {
@@ -40,20 +40,21 @@ void combinaRepet(int r, int n) {
 
 	//Como é um vetor, o elemento mais à direita é o 'algarismo menos significativo' na hora de imprimir
 	for(i = r - 1; i >= 0; i--) {						//Vai do algarismo 'menos significativo' até o 'mais significativo'
-	    for(j = r - 1; j >= i; j--) {                   //Vai do algarismo 'menos significativo' até a posição atual ('i') e
-	        while(combinacao[r - 1] <= n) { 
-	            imprimeSequencia(r, combinacao);
-                fflush(stdout);
-                
-                combinacao[r - 1]++;
-            }
-            if(i > 0) {
-                combinacao[i - 1]++; 
-                for(k = i; k < r; k++)                            //Para todas as posições anterioes
-                    combinacao[k] = combinacao[i - 1];                //Iguala elas à atual, até a última (mais a direita) ao valor da próxima incrementada.
-            } 
-	    }
-    }
+		for(j = r - 1; j >= i; j--) {                   //Vai do algarismo 'menos significativo' até a posição atual ('i') e
+	        	while(combinacao[r - 1] <= n) { 
+	         		imprimeSequencia(r, combinacao);
+                		fflush(stdout);
+				
+				if(combinacao[r - 1] < n);
+                			combinacao[r - 1]++;
+           	 	}	
+			if(combinacao[i] < n) {
+				combinacao[i]++;
+				for(k = i + 1; k < r; k++)
+					combinacao[k] = combinacao[i];            			    
+			}
+		}
+    	}
 }
 
 int main(int argc, char* argv[]) {
