@@ -77,6 +77,8 @@ void imprimePermutaRepet(int r, int n) {
         imprimeSequencia(r, sequencia);				//Imprime o valor da sequência atual
         fflush(stdout);								//Limpa o buffer de saída, para agilizar a saída dos dados na tela.
     }while(proxPermutRepet(r, n, sequencia));
+
+    free(sequencia);
 }
 
 int main(int main, char* argv[]) {
