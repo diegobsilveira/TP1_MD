@@ -7,6 +7,12 @@
 
 #include <stdlib.h>
 #include <stdio.h>
+#include <stdbool.h>	//Para utilizar tipos booleanos - true | false
+
+#define MIN_r 2
+#define MAX_r 10
+#define MIN_n 1
+#define MAX_n 20
 
 //r é o tamanho da sequência, como definido no problema e na int main()
 int* inicializaSequencia(int r) {
@@ -26,74 +32,71 @@ int* inicializaSequencia(int r) {
 }
 
 //Imprime a sequência atual
+//*Nota, como foi usado um vetor, as posições tem que ser impressas "em reverso" para aparecerem do jeito que são
+//no vetor e em ordem crescente.
 void imprimeSequencia(int r, int* sequencia) {
 	int i;
-	for(i = 0; i < r; i++)
+	for(i = r - 1; i > 0; i--)
 		printf("%d ", *(sequencia + i));
-	printf("\n");
+
+    printf("%d\n",*(sequencia + i));
+}
+
+//Checa se ainda dá para permutar e já define os valores de uma única permutação de uma vez na 'sequencia' 
+bool proxPermutRepet(int r, int n, int* sequencia) {
+	int i,                                  //Variável de controle para acessar as posições do vetor 'sequencia'.
+		posix = 1;                          //Variável de controle que será
+		                                    //usada para já setar e rodar ""recursivamente"" o algoritmo - no sentido de
+                                            //que ele roda para as posições i < posix, que será modificado também dentro
+                                            //do for
+                                            
+	for(i = 0; i < posix; i++) {      //Loop que roda por todas as posições do vetor
+	                                        //de acordo com a incrementação de posix
+	                                        
+		if(++sequencia[i] > n) {            //Equivalente à um while - enquanto o valor do vetor sequencia for menor do que n
+			sequencia[i] = 1;               //Mas se for maior reseta a posição 'i' para 1,
+			                                //para recomeçar a contagem.
+			if(i < (r - 1))                 //e vai fazendo isso para todas as posições menos significativas até a posição                                 //atual
+			                                //até todas as posições do vetor
+				posix++;
+			else
+				return false;               //terminou o 'loop'
+		}
+		
+	}
+	
+	return true;                            //conseguiu fazer as devidas modificações no vetor.
 }
 
 //Faz a permutação com repetição da sequência e imprime na tela;
-void permutaRepet(int r, int n) {
-	int i, j, k;
+void imprimePermutaRepet(int r, int n) {
+	int i, j, k;									//Variáveis de controle para os loops de execução.
 	int* sequencia = inicializaSequencia(r);		//Inicializa uma sequência de tamanho r.
 
-	/*
-	//Como é um vetor, o elemento mais à direita é o 'algarismo menos significativo' na hora de imprimir	
-	for(i = r - 1; i >= 0; j++) {
-		while(sequencia[r - 1] <= n) {	//Enquanto o valor da posição atual for menor ou igual a 'n'
-			imprimeSequencia(r, sequencia);
-			fflush(stdout);			//Limpa o buffer de saída dos dados, para agilizar a impressão dos mesmos.
-				
-			sequencia[r - 1]++;		//Incrementa o valor da posição corrente até ela ser igual ao número máximo ('n').
-		}
-
-		if(sequencia[i] == n) {
-			sequencia[i - 1]++;
-			sequencia[i] = 1;
-		} else {
-			sequencia[i]++;
-		}
-	} */
-	for(i = r -1; i >= 0; i--) {						//Vai do algarismo 'menos significativo' até o 'mais significativo'
-		for(j = r - 1; j >= i; j--) {
-			while(sequencia[r - 1] <= n) {	//Enquanto o valor da posição atual for menor ou igual a 'n'
-				imprimeSequencia(r, sequencia);
-				fflush(stdout);			//Limpa o buffer de saída dos dados, para agilizar a impressão dos mesmos.
-				
-				sequencia[r - 1]++;		//Incrementa o valor da posição corrente até ela ser igual ao número máximo ('n').
-			}
-
-			for(k = r - 1; k >= i; k--) {
-				if(sequencia[k] == n) {
-					sequencia[k] = 1; 			//quando termina de contar até 'n' uma posição, volta o valor dela para 1
-					sequencia[k - 1]++;		//e aumenta um no valor da anterior, pra fazer essa 'contagem' com essa outra posição
-				}
-			}
-		}
-	}
+	do{
+        imprimeSequencia(r, sequencia);				//Imprime o valor da sequência atual
+    }while(proxPermutRepet(r, n, sequencia));
 }
 
 int main(int main, char* argv[]) {
 	int r, n;   	//Variáveis definidas pelo input do usuário,
-	    		//de  controle, para imprimir a permutação com
-			//repetição para o usuário.
+	    			//de  controle, para imprimir a permutação com
+					//repetição para o usuário.
 
 	printf("Digite o valor de r (2 <= r <= 10) e n (1 <= n <= 20) respectivamente: \n");
 	scanf("%d%d", &r, &n);
 	
-	if((r < 2 || r > 10) || (n < 1 || n > 20)) {            //Se algum dos valores digitados está fora de seu intervalo válido
+	if((r < MIN_r || r > MAX_r) || (n < MIN_n || n > MAX_n)) {            //Se algum dos valores digitados está fora de seu intervalo válido
 		printf("Algum dos valores digitados está fora do seu respectivo intervalo válido! Digite novamente\n");
 
 		do {
 			printf("Digite o valor de r (2 <= r <= 10) e n (1 <= n <= 20) respectivamente: \n");
 			scanf("%d%d", &r, &n);                                                                  //O usuário digita novamente ...
-		} while((r < 2 || r > 10) || (n < 1 || n > 20));	                                        //até o valor digitado ser válido
+		} while((r < MIN_r || r > MAX_r) || (n < MIN_n || n > MAX_n));	                                        //até o valor digitado ser válido
 	}
 	
 	printf("\nPermutação com repetição:\n");
-
-	permutaRepet(r, n);				//Imprime a permutação da sequência, de acordo com 'r' e 'n' digitados pelo usuário
+    	imprimePermutaRepet(r, n);
 	
 	return 0;
 }
