@@ -7,6 +7,7 @@
 
 #include <stdlib.h>
 #include <stdio.h>
+#include <stdbool.h>    //Para utilizar tipos booleanos - true | false
 
 //r é o tamanho da sequência, como definido no problema e na int main()
 int* inicializaSequencia(int r) {
@@ -19,44 +20,79 @@ int* inicializaSequencia(int r) {
 	}
 
 	for(i = 0; i < r; i++)
-		*(sequencia + i) = i + 1;	//Pois nesse caso os elementos
-						//não podem ser repetidos.
+		*(sequencia + i) = 1;
+				
 	return sequencia;
 }
 
 //Imprime a sequência atual
+//*Nota, como foi usado um vetor, as posições tem que ser impressas "em reverso" para aparecerem do jeito que são
+//no vetor e em ordem crescente.
 void imprimeSequencia(int r, int* sequencia) {
 	int i;
-	for(i = 0; i < r; i++)
+	for(i = r - 1; i > 0; i--)
 		printf("%d ", *(sequencia + i));
-        
-    	printf("\n");
+
+    printf("%d\n",*(sequencia + i));
 }
 
-//Troca o valor da posição de 'pos' com 'troc' e de 'troc' com 'pos'
-void troca(int pos, int troc, int tam, int* sequencia) {
-	if((pos <= tam - 1 && pos >= 0 ) && (troc <= tam- 1 && troc >= 0)) {
-		if(pos == troc)
-			return;
-		int aux = *(sequencia + pos);		//Variável auxiliar pra guardar o valor inicial da posição 'pos' - que será colocado na posição 'troc';
-		*(sequencia + pos) = *(sequencia + troc);
-		*(sequencia + troc) = aux;
-	} else {
-		printf("Não foi possível trocar as posições %d e %d\n", pos, troc);
-		return;
+//Checa se ainda dá para permutar e já define os valores de uma única permutação de uma vez na 'sequencia' 
+bool proxPermutRepet(int r, int n, int* sequencia) {
+	int i,                                  //Variável de controle para acessar as posições do vetor 'sequencia'.
+		posix = 1;                          //Variável de controle que será
+		                                    //usada para já setar e rodar ""recursivamente"" o algoritmo - no sentido de
+                                            //que ele roda para as posições i < posix, que será modificado também dentro
+                                            //do for
+                                            
+	for(i = 0; i < posix; i++) {      //Loop que roda por todas as posições do vetor
+	                                        //de acordo com a incrementação de posix
+	                                        
+		if(++sequencia[i] > n) {            //Equivalente à um while - enquanto o valor do vetor sequencia for menor do que n
+			sequencia[i] = 1;               //Mas se for maior reseta a posição 'i' para 1,
+			                                //para recomeçar a contagem.
+			if(i < (r - 1))                 //e vai fazendo isso para todas as posições menos significativas até a posição                                 //atual
+			                                //até todas as posições do vetor
+				posix++;
+			else
+				return false;               //terminou o 'loop'
+		}
+		
 	}
+	
+	return true;                            //conseguiu fazer as devidas modificações no vetor.
 }
 
-void permutSemRepet(int r, int n) {
+//Checa se um mesmo valor está no vetor mais de uma vez
+bool valorJaExiste(int r, int* sequencia) {
 	int i, j;
-
-	int* sequencia = inicializaSequencia(r);
-
-	for(i = r - 1; i > 0; i--) {
-		imprimeSequencia(r, sequencia);
-		troca(0, r - i, r, sequencia);
+	for(i = 0; i < r; i++) {
+		for(j = 0; j < r; j++) {
+			if((sequencia[i] == sequencia[j]) && (i != j))
+			    return true;
+		}
 	}
+
+	return false;
 }
+
+//Faz a permutação sem repetição repetição da sequência e imprime na tela;
+void imprimePermutaSemRepet(int r, int n) {
+	int* sequencia = inicializaSequencia(r);		//Inicializa uma sequência de tamanho r.
+
+	do{
+	    if(!(valorJaExiste(r, sequencia))) {            //Imprime o valor se não existirem algarismos
+	                                                    //repetidos na sequência formada pela permutação com repetição 
+	                                                    // - isso forma a sem repetição
+	                                                    
+	                                                    
+            imprimeSequencia(r, sequencia);				//Imprime o valor da sequência atual
+            fflush(stdout);								//Limpa o buffer de saída, para agilizar a saída dos dados na tela.    
+	    }
+    }while(proxPermutRepet(r, n, sequencia));
+
+    free(sequencia);
+}
+
 
 int main(int argc, char* argv[]) {
 	int r, n;	//Variáveis definidas pelo input do usuário, 
@@ -82,7 +118,7 @@ int main(int argc, char* argv[]) {
 	}
 
 	printf("\nPermutação sem repetição: \n");
-    	permutSemRepet(r, n);
+    	imprimePermutaSemRepet(r, n);
 
 	return 0;
 }
